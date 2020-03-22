@@ -4,6 +4,17 @@ namespace dnc100_mortgage_calculator
 {
     public class Program
     {
+        public static double Mortgage(double principal, double interestRate, int term, int period)
+        {
+            int months = term * 12;
+            double r = interestRate / 1200;
+            double top = r * Math.Pow((1 + r), months);
+            double bottom = Math.Pow((1 + r), months) - 1;
+            double payment = (principal * (top / bottom));
+            string str = payment.ToString("0.00");
+            double mortgage = Convert.ToDouble(str);
+            return mortgage;
+        }
         static void Main(string[] args)
         {
             Mortgage mortgage;
