@@ -4,32 +4,33 @@ namespace dnc100_mortgage_calculator
 {
     public class Program
     {
-        public static double Mortgage(double principal, double interestRate, int term, int period)
-        {
-            int months = term * 12;
-            double r = interestRate / 1200;
-            double top = r * Math.Pow((1 + r), months);
-            double bottom = Math.Pow((1 + r), months) - 1;
-            double payment = (principal * (top / bottom));
-            string str = payment.ToString("0.00");
-            double mortgage = Convert.ToDouble(str);
-            return mortgage;
-        }
         static void Main(string[] args)
         {
-            Mortgage mortgage;
-            double principal, interestRate, monthlyPayment;
+            double principal, interestRate;
             int term, period;
-            monthlyPayment = 0;
-            
+            bool valid = false;
 
-
-            // Use .WriteLine to greet the user
             Console.WriteLine("Hello!  Hope you are having a great day!");
-            Console.Write("What is the principal amount due on your home loan: ");
-            principal = Convert.ToDouble(Console.ReadLine());
-            Console.WriteLine("If the principal due is $" + principal + ".00.");
-            Console.Write("What is your interest rate: ");
+            while (!valid)
+            {
+                Console.Write("What is the principal amount due on your home loan: ");
+                bool isDouble = Double.TryParse(Console.ReadLine(), out principal);
+                if (isDouble)
+                {
+                    Console.WriteLine("If the principal due is $" + principal + ".00.");
+                    valid = true;
+                }
+                else
+                {
+                    Console.WriteLine("Please enter a valid dollar amount.");
+                    valid = false;
+                }
+            }
+            principal = 0;
+            if (valid)
+            {
+                Console.Write("What is your interest rate: ");
+            }
             interestRate = Convert.ToDouble(Console.ReadLine());
             Console.WriteLine("And your interest rate is " + interestRate + "%.");
             Console.Write("What is the term of your loan in years: ");
@@ -38,14 +39,14 @@ namespace dnc100_mortgage_calculator
             Console.Write("How many payments will you be making per year: ");
             period = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("And your make " + period + " payment per year.");
+            Mortgage mortgage = new Mortgage(principal, interestRate, term, period);
+            double monthlyPayment = mortgage.Calculate();
+            int months = mortgage.NumberOfPayments(term, period);
+            double monthlyRate = mortgage.MonthlyInterestRate(interestRate, period);
+            double compoundInterest = mortgage.CompoundedInterestRate(monthlyRate, months);
+            double iQ = mortgage.InterestQuotient(monthlyRate, compoundInterest, months);
             Console.WriteLine("Your monthly payment would be " + monthlyPayment + ".");
-            // Use a mix of WriteLine and ReadLine to obtain the mortgage attributes (Making sure to typecast)
 
-            // Create a new Mortgage with the given attributes;
-
-            // Use the Mortgage functions to calculate the monthly payment
-
-            // Use WriteLine to output the monthly payment
             Console.Read();
         }
     }

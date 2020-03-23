@@ -18,12 +18,14 @@ namespace dnc100_mortgage_calculator
 
         public double MonthlyInterestRate(double interest, int period)
         {
-            return 0;
+            double percent = interest / 100;
+            double monthlyRate = percent / period;
+            return monthlyRate;
         }
 
         public int NumberOfPayments(int term, int period)
         {
-            return 0;
+            return period * term;
         }
 
         public double CompoundedInterestRate(double monthlyInterestRate, int numberOfPayments)
