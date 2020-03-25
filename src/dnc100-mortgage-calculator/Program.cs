@@ -6,8 +6,8 @@ namespace dnc100_mortgage_calculator
     {
         static void Main(string[] args)
         {
-            double principal, interestRate;
-            int term, period;
+            double principal = 0, interestRate = 0;
+            int term = 0, period = 0;
             bool valid = false;
 
             Console.WriteLine("Hello!  Hope you are having a great day!");
@@ -26,19 +26,46 @@ namespace dnc100_mortgage_calculator
                     valid = false;
                 }
             }
-            principal = 0;
-            if (valid)
+            while (valid)
             {
                 Console.Write("What is your interest rate: ");
+
+                bool isRate = Double.TryParse(Console.ReadLine(), out interestRate);
+                if (isRate)
+                {
+                    Console.WriteLine("And your interest rate is " + interestRate + "%.");
+                    valid = false;
+                }
+                else
+                {
+                    Console.WriteLine("Please enter a valid Interest Rate.");
+                    valid = true;
+                }
             }
-            interestRate = Convert.ToDouble(Console.ReadLine());
-            Console.WriteLine("And your interest rate is " + interestRate + "%.");
-            Console.Write("What is the term of your loan in years: ");
-            term = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("And the term of your loan is a " + term + " year loan.");
-            Console.Write("How many payments will you be making per year: ");
-            period = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("And your make " + period + " payment per year.");
+            while (!valid)
+            {
+                Console.Write("What is the term of your loan in years: ");
+                bool isTerm = int.TryParse(Console.ReadLine(), out term);
+                if (isTerm)
+                {
+                    Console.WriteLine("And the term of your loan is a " + term + " year loan.");
+                    valid = true;
+                }
+                else
+                    Console.WriteLine("Please enter a valid Term");
+            }
+            while (valid)
+            { 
+                Console.Write("How many payments will you be making per year: ");
+            bool isPeriod = int.TryParse(Console.ReadLine(), out period);
+            if (isPeriod)
+            {
+                Console.WriteLine("And your make " + period + " payment per year.");
+                valid = false;
+            }
+            else
+                Console.WriteLine("Please enter a valid number of payments per year.");
+            }
             Mortgage mortgage = new Mortgage(principal, interestRate, term, period);
             double monthlyPayment = mortgage.Calculate();
             int months = mortgage.NumberOfPayments(term, period);
