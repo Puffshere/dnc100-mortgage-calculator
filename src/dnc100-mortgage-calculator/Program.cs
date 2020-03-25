@@ -66,13 +66,17 @@ namespace dnc100_mortgage_calculator
             else
                 Console.WriteLine("Please enter a valid number of payments per year.");
             }
+
             Mortgage mortgage = new Mortgage(principal, interestRate, term, period);
             double monthlyPayment = mortgage.Calculate();
+
             int months = mortgage.NumberOfPayments(term, period);
             double monthlyRate = mortgage.MonthlyInterestRate(interestRate, period);
             double compoundInterest = mortgage.CompoundedInterestRate(monthlyRate, months);
             double iQ = mortgage.InterestQuotient(monthlyRate, compoundInterest, months);
-            Console.WriteLine("Your monthly payment would be " + monthlyPayment + ".");
+
+            Console.WriteLine("Your monthly payment would be $" + String.Format("{0:.##}", monthlyPayment) + ".");
+            Console.WriteLine("Press any key to end program.");
 
             Console.Read();
         }

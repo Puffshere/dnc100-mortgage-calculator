@@ -6,14 +6,26 @@ namespace dnc100_mortgage_calculator
 {
     public class Mortgage
     {
+        private int _period;
+        private int _term;
+        private double _interest;
+        private double _principle;
+
         public Mortgage(double principle, double interest, int term, int period)
         {
-
+            _period = period;
+            _term = term;
+            _interest = interest;
+            _principle = principle;
         }
 
         public double Calculate()
         {
-            return 0;
+            double monthlyInterestRate = MonthlyInterestRate(_interest, _period);
+            int numberOfPayments = NumberOfPayments(_term, _period);
+            double compoundedInterestRate = CompoundedInterestRate(monthlyInterestRate, numberOfPayments);
+            double interestQuotient = InterestQuotient(monthlyInterestRate, compoundedInterestRate, numberOfPayments);
+            return _principle * interestQuotient;
         }
 
         public double MonthlyInterestRate(double interest, int period)
@@ -30,12 +42,15 @@ namespace dnc100_mortgage_calculator
 
         public double CompoundedInterestRate(double monthlyInterestRate, int numberOfPayments)
         {
-            return 0;
+            double compounded = Math.Pow((1 + monthlyInterestRate), numberOfPayments);
+
+            return compounded;
         }
 
         public double InterestQuotient(double monthlyInterestRate, double compoundedInterestRate, int numberOfPayments)
         {
-            return 0;
+            double interestQuota = (monthlyInterestRate * numberOfPayments) * (1 - compoundedInterestRate);
+            return Math.Abs(interestQuota);
         }
     }
 }
